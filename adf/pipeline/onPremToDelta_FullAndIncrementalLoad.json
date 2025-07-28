@@ -1,0 +1,270 @@
+{
+	"name": "onPremToDelta_FullAndIncrementalLoad",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Schema Details",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "If Condition",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 2,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_CATALOG = 'AdventureWorksLT2022';",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "OnPrem_DFF28MNM_SQLServer_LS",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach Table",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Schema Details",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Schema Details').output.value",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"batchCount": 3,
+					"activities": [
+						{
+							"name": "If Condition Incremental",
+							"type": "IfCondition",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@contains(pipeline().parameters.incrementalTables, item().TABLE_NAME)",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Save Data to Staging FR",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "SqlServerSource",
+												"sqlReaderQuery": {
+													"value": "@concat('SELECT * FROM ', item().TABLE_SCHEMA, '.', item().TABLE_NAME)",
+													"type": "Expression"
+												},
+												"queryTimeout": "02:00:00",
+												"partitionOption": "None"
+											},
+											"sink": {
+												"type": "DelimitedTextSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings",
+													"copyBehavior": "FlattenHierarchy"
+												},
+												"formatSettings": {
+													"type": "DelimitedTextWriteSettings",
+													"quoteAllText": true,
+													"fileExtension": ".txt"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
+										},
+										"inputs": [
+											{
+												"referenceName": "OnPrem_DFF28MNM_SQLServer_LS",
+												"type": "DatasetReference"
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "param_CSV_ADLS_DS",
+												"type": "DatasetReference",
+												"parameters": {
+													"contianer": {
+														"value": "@pipeline().parameters.destination_container",
+														"type": "Expression"
+													},
+													"path": {
+														"value": "@concat(item().TABLE_SCHEMA, '/', item().TABLE_NAME)",
+														"type": "Expression"
+													},
+													"filename": {
+														"value": "@concat(item().TABLE_NAME, '_', utcNow(), '.csv')",
+														"type": "Expression"
+													}
+												}
+											}
+										]
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "Save Data to Staging IC",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "SqlServerSource",
+												"sqlReaderQuery": "@concat('SELECT * FROM ', item().TABLE_SCHEMA, '.', item().TABLE_NAME, ' WHERE ModifiedDate=''', pipeline().parameters.ingestionDate, '''')",
+												"queryTimeout": "02:00:00",
+												"partitionOption": "None"
+											},
+											"sink": {
+												"type": "DelimitedTextSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings",
+													"copyBehavior": "FlattenHierarchy"
+												},
+												"formatSettings": {
+													"type": "DelimitedTextWriteSettings",
+													"quoteAllText": true,
+													"fileExtension": ".txt"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
+										},
+										"inputs": [
+											{
+												"referenceName": "OnPrem_DFF28MNM_SQLServer_LS",
+												"type": "DatasetReference"
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "param_CSV_ADLS_DS",
+												"type": "DatasetReference",
+												"parameters": {
+													"contianer": {
+														"value": "@pipeline().parameters.destination_container",
+														"type": "Expression"
+													},
+													"path": {
+														"value": "@concat(item().TABLE_SCHEMA, '/', item().TABLE_NAME)",
+														"type": "Expression"
+													},
+													"filename": {
+														"value": "@concat(item().TABLE_NAME, '_', utcNow(), '.csv')",
+														"type": "Expression"
+													}
+												}
+											}
+										]
+									}
+								]
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "If Condition",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(trim(pipeline().parameters.ingestionDate),'') ",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "Set Todays Date",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "ingestionDate",
+								"value": "@formatDateTime(utcNow(),'yyyy-MM-dd')\n"
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"incrementalTables": {
+				"type": "string"
+			},
+			"ingestionDate": {
+				"type": "string"
+			},
+			"destination_container": {
+				"type": "string",
+				"defaultValue": "staging"
+			}
+		},
+		"variables": {
+			"ingestionDate": {
+				"type": "String"
+			},
+			"filename": {
+				"type": "String"
+			},
+			"path": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}

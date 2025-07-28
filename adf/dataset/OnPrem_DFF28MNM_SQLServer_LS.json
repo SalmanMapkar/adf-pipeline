@@ -1,0 +1,12 @@
+{
+	"name": "OnPrem_DFF28MNM_SQLServer_LS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "OnPrem_DFF28MNM_SQLServer_IR",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	}
+}
