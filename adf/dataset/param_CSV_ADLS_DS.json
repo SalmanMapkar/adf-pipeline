@@ -7,13 +7,16 @@
 		},
 		"parameters": {
 			"contianer": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": " "
 			},
 			"path": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": " "
 			},
 			"filename": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": " "
 			}
 		},
 		"annotations": [],
