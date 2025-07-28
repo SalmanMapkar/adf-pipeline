@@ -1,0 +1,9 @@
+{
+	"name": "DESKTOP-FF28MNM-IR",
+	"properties": {
+		"type": "SelfHosted",
+		"typeProperties": {
+			"selfContainedInteractiveAuthoringEnabled": true
+		}
+	}
+}
