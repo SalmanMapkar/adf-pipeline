@@ -1,0 +1,218 @@
+{
+	"name": "deleteFilesPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Metadata",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "param_CSV_ADLS_DS",
+						"type": "DatasetReference",
+						"parameters": {
+							"contianer": {
+								"value": "@pipeline().parameters.container",
+								"type": "Expression"
+							},
+							"path": {
+								"value": "@pipeline().parameters.path",
+								"type": "Expression"
+							}
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "Filter Folders",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().type, 'Folder')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEach folder",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Filter Folders",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Filter Folders').output.Value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Get Metadata of Subfolder",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "param_CSV_ADLS_DS",
+									"type": "DatasetReference",
+									"parameters": {
+										"contianer": {
+											"value": "@pipeline().parameters.container",
+											"type": "Expression"
+										},
+										"path": {
+											"value": "@concat(pipeline().parameters.path, '/', item().name)",
+											"type": "Expression"
+										},
+										"filename": " "
+									}
+								},
+								"fieldList": [
+									"childItems"
+								],
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							}
+						},
+						{
+							"name": "Filter non-csv",
+							"type": "Filter",
+							"dependsOn": [
+								{
+									"activity": "Get Metadata of Subfolder",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@activity('Get Metadata of Subfolder').output.childItems",
+									"type": "Expression"
+								},
+								"condition": {
+									"value": "@and(\n    equals(item().type,'File'),\n    not(endswith(item().name,'.csv')))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Delete File",
+							"type": "Delete",
+							"dependsOn": [
+								{
+									"activity": "Filter non-csv",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "param_CSV_ADLS_DS",
+									"type": "DatasetReference",
+									"parameters": {
+										"contianer": {
+											"value": "@pipeline().parameters.container",
+											"type": "Expression"
+										},
+										"path": {
+											"value": "@concat(pipeline().parameters.path, '/', item().name)",
+											"type": "Expression"
+										},
+										"filename": {
+											"value": "@activity('Filter non-csv').output.Value[0].name",
+											"type": "Expression"
+										}
+									}
+								},
+								"enableLogging": false,
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "staging"
+			},
+			"path": {
+				"type": "string",
+				"defaultValue": "SalesLT"
+			},
+			"wildcard": {
+				"type": "string",
+				"defaultValue": " "
+			},
+			"filename": {
+				"type": "string",
+				"defaultValue": " "
+			}
+		},
+		"annotations": []
+	}
+}
