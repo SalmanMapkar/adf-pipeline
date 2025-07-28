@@ -1,0 +1,12 @@
+{
+	"name": "param_ADLS_LS",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://adbtutde.dfs.core.windows.net/",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDA3QzQ2QTVDLTE1OUItNDg4Ni1CRDc2LTUyMzhGQUJFRjc3N18wYTQ0ZjkxOS1iZjRhLTQ2MDUtYTMxMy1kZDU2MmFmN2MzZTIiDQp9"
+		}
+	}
+}
