@@ -2,11 +2,6 @@
 	"name": "OnPrem_DFF28MNM_SQLServer_IR",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
-		"parameters": {
-			"schema": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"type": "SqlServer",
 		"typeProperties": {
@@ -16,7 +11,7 @@
 			"trustServerCertificate": false,
 			"authenticationType": "SQL",
 			"userName": "adf_user",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJjYzgxODFjMC1iM2RhLTRjMGYtYTVmNC1jZjE3ZDBiOTQxY2MiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI3ZjIzM2Q2Yi02OTA4LTQ5ZWItOGQxYi1hNDUzMTI2NjU5NDkiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "DESKTOP-FF28MNM-IR",
