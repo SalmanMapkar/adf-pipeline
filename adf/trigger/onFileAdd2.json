@@ -2,16 +2,12 @@
 	"name": "onFileAdd2",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
 					"referenceName": "fileEventPipeline",
 					"type": "PipelineReference"
-				},
-				"parameters": {
-					"path": "@triggerBody.folderPath",
-					"name": "@triggerBody.fileName"
 				}
 			}
 		],
