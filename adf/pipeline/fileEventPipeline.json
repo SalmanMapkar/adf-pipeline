@@ -96,7 +96,7 @@
 			},
 			"name": {
 				"type": "string",
-				"defaultValue": "*.parquet"
+				"defaultValue": ".parquet"
 			}
 		},
 		"annotations": []
