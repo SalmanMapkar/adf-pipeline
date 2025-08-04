@@ -20,21 +20,31 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": {
-								"value": "@pipeline().parameters.path",
-								"type": "Expression"
-							},
-							"wildcardFileName": {
-								"value": "@pipeline().parameters.name",
-								"type": "Expression"
-							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
 							"type": "ParquetReadSettings"
 						}
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings",
+							"copyBehavior": "FlattenHierarchy"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
@@ -49,7 +59,27 @@
 								"value": "@pipeline().parameters.path",
 								"type": "Expression"
 							},
-							"file": " "
+							"file": {
+								"value": "@pipeline().parameters.name",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "paramADLSParquet_DS",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@pipeline().parameters.container",
+								"type": "Expression"
+							},
+							"path": "NYC_Taxi_Target",
+							"file": {
+								"value": "@pipeline().parameters.name",
+								"type": "Expression"
+							}
 						}
 					}
 				]
