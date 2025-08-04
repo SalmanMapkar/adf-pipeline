@@ -20,8 +20,6 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "NYC_Taxi",
-							"wildcardFileName": "*.parquet",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -54,15 +52,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"container": {
-								"value": "staging",
+								"value": "@split(pipeline().parameters.sourceFolderPath, '/')[0]",
 								"type": "Expression"
 							},
 							"path": {
-								"value": "NYC_Taxi",
+								"value": "@split(pipeline().parameters.sourceFolderPath, '/')[1]",
 								"type": "Expression"
 							},
 							"file": {
-								"value": " ",
+								"value": "@pipeline().parameters.sourceFileName",
 								"type": "Expression"
 							}
 						}
@@ -74,11 +72,17 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"container": {
-								"value": "staging",
+								"value": "@pipeline().parameters.destinationContainer",
 								"type": "Expression"
 							},
-							"path": "NYC_Taxi_Target",
-							"file": "random.parquet"
+							"path": {
+								"value": "@pipeline().parameters.destinationPath",
+								"type": "Expression"
+							},
+							"file": {
+								"value": "@pipeline().parameters.sourceFileName",
+								"type": "Expression"
+							}
 						}
 					}
 				]
