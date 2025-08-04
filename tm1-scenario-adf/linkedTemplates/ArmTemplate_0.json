@@ -39,25 +39,9 @@
 			"type": "string",
 			"defaultValue": "adf_user"
 		},
-		"onFileAdd_properties_fileEventPipeline_parameters_path": {
-			"type": "string",
-			"defaultValue": "@triggerBody.folderPath"
-		},
-		"onFileAdd_properties_fileEventPipeline_parameters_name": {
-			"type": "string",
-			"defaultValue": "@triggerBody.fileName"
-		},
 		"onFileAdd_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde"
-		},
-		"onFileAdd2_properties_fileEventPipeline_parameters_path": {
-			"type": "string",
-			"defaultValue": "@triggerBody.folderPath"
-		},
-		"onFileAdd2_properties_fileEventPipeline_parameters_name": {
-			"type": "string",
-			"defaultValue": "@triggerBody.fileName"
 		},
 		"onFileAdd2_properties_typeProperties_scope": {
 			"type": "string",
@@ -492,6 +476,8 @@
 								"storeSettings": {
 									"type": "AzureBlobFSReadSettings",
 									"recursive": true,
+									"wildcardFolderPath": "NYC_Taxi",
+									"wildcardFileName": "*.parquet",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -524,15 +510,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"container": {
-										"value": "@pipeline().parameters.container",
+										"value": "staging",
 										"type": "Expression"
 									},
 									"path": {
-										"value": "@pipeline().parameters.path",
+										"value": "NYC_Taxi",
 										"type": "Expression"
 									},
 									"file": {
-										"value": "@pipeline().parameters.name",
+										"value": " ",
 										"type": "Expression"
 									}
 								}
@@ -544,14 +530,11 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"container": {
-										"value": "@pipeline().parameters.container",
+										"value": "staging",
 										"type": "Expression"
 									},
 									"path": "NYC_Taxi_Target",
-									"file": {
-										"value": "@pipeline().parameters.name",
-										"type": "Expression"
-									}
+									"file": "random.parquet"
 								}
 							}
 						]
@@ -559,20 +542,6 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"container": {
-						"type": "string",
-						"defaultValue": "staging"
-					},
-					"path": {
-						"type": "string",
-						"defaultValue": "NYC_Taxi"
-					},
-					"name": {
-						"type": "string",
-						"defaultValue": ".parquet"
-					}
 				},
 				"annotations": []
 			},
@@ -899,10 +868,7 @@
 							"referenceName": "fileEventPipeline",
 							"type": "PipelineReference"
 						},
-						"parameters": {
-							"path": "[parameters('onFileAdd_properties_fileEventPipeline_parameters_path')]",
-							"name": "[parameters('onFileAdd_properties_fileEventPipeline_parameters_name')]"
-						}
+						"parameters": {}
 					}
 				],
 				"type": "BlobEventsTrigger",
@@ -933,10 +899,7 @@
 							"referenceName": "fileEventPipeline",
 							"type": "PipelineReference"
 						},
-						"parameters": {
-							"path": "[parameters('onFileAdd2_properties_fileEventPipeline_parameters_path')]",
-							"name": "[parameters('onFileAdd2_properties_fileEventPipeline_parameters_name')]"
-						}
+						"parameters": {}
 					}
 				],
 				"type": "BlobEventsTrigger",
