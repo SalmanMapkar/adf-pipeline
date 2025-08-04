@@ -39,18 +39,6 @@
 			"type": "string",
 			"defaultValue": "https://adbtutde.dfs.core.windows.net/"
 		},
-		"onFileAdd_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde"
-		},
-		"onFileAdd2_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde"
-		},
-		"onFileAdd3_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -101,15 +89,6 @@
 					},
 					"OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_userName": {
 						"value": "[parameters('OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_userName')]"
-					},
-					"onFileAdd_properties_typeProperties_scope": {
-						"value": "[parameters('onFileAdd_properties_typeProperties_scope')]"
-					},
-					"onFileAdd2_properties_typeProperties_scope": {
-						"value": "[parameters('onFileAdd2_properties_typeProperties_scope')]"
-					},
-					"onFileAdd3_properties_typeProperties_scope": {
-						"value": "[parameters('onFileAdd3_properties_typeProperties_scope')]"
 					}
 				}
 			},
