@@ -47,6 +47,14 @@
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
 		},
+		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_destinationContainer": {
+			"type": "string",
+			"defaultValue": " "
+		},
+		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_destinationPath": {
+			"type": "string",
+			"defaultValue": " "
+		},
 		"onNYCFileCreateTrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde"
@@ -107,6 +115,12 @@
 					},
 					"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFileName": {
 						"value": "[parameters('onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFileName')]"
+					},
+					"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_destinationContainer": {
+						"value": "[parameters('onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_destinationContainer')]"
+					},
+					"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_destinationPath": {
+						"value": "[parameters('onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_destinationPath')]"
 					},
 					"onNYCFileCreateTrigger_properties_typeProperties_scope": {
 						"value": "[parameters('onNYCFileCreateTrigger_properties_typeProperties_scope')]"

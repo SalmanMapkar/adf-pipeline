@@ -35,6 +35,12 @@
 		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFileName": {
 			"value": "@triggerBody().fileName"
 		},
+		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_destinationContainer": {
+			"value": " "
+		},
+		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_destinationPath": {
+			"value": " "
+		},
 		"onNYCFileCreateTrigger_properties_typeProperties_scope": {
 			"value": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde"
 		},
