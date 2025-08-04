@@ -29,13 +29,13 @@
 		"param_ADLS_LS_properties_typeProperties_url": {
 			"value": "https://adbtutde.dfs.core.windows.net/"
 		},
-		"taxiParquetFileTrigger_properties_fileEventPipeline_parameters_sourceFolderPath": {
+		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFolderPath": {
 			"value": "@triggerBody().folderPath"
 		},
-		"taxiParquetFileTrigger_properties_fileEventPipeline_parameters_sourceFileName": {
+		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFileName": {
 			"value": "@triggerBody().fileName"
 		},
-		"taxiParquetFileTrigger_properties_typeProperties_scope": {
+		"onNYCFileCreateTrigger_properties_typeProperties_scope": {
 			"value": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde"
 		},
 		"containerUri": {

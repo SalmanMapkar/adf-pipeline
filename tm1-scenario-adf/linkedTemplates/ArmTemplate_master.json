@@ -39,15 +39,15 @@
 			"type": "string",
 			"defaultValue": "https://adbtutde.dfs.core.windows.net/"
 		},
-		"taxiParquetFileTrigger_properties_fileEventPipeline_parameters_sourceFolderPath": {
+		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFolderPath": {
 			"type": "string",
 			"defaultValue": "@triggerBody().folderPath"
 		},
-		"taxiParquetFileTrigger_properties_fileEventPipeline_parameters_sourceFileName": {
+		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFileName": {
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
 		},
-		"taxiParquetFileTrigger_properties_typeProperties_scope": {
+		"onNYCFileCreateTrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde"
 		},
@@ -102,14 +102,14 @@
 					"OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_userName": {
 						"value": "[parameters('OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_userName')]"
 					},
-					"taxiParquetFileTrigger_properties_fileEventPipeline_parameters_sourceFolderPath": {
-						"value": "[parameters('taxiParquetFileTrigger_properties_fileEventPipeline_parameters_sourceFolderPath')]"
+					"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFolderPath": {
+						"value": "[parameters('onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFolderPath')]"
 					},
-					"taxiParquetFileTrigger_properties_fileEventPipeline_parameters_sourceFileName": {
-						"value": "[parameters('taxiParquetFileTrigger_properties_fileEventPipeline_parameters_sourceFileName')]"
+					"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFileName": {
+						"value": "[parameters('onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFileName')]"
 					},
-					"taxiParquetFileTrigger_properties_typeProperties_scope": {
-						"value": "[parameters('taxiParquetFileTrigger_properties_typeProperties_scope')]"
+					"onNYCFileCreateTrigger_properties_typeProperties_scope": {
+						"value": "[parameters('onNYCFileCreateTrigger_properties_typeProperties_scope')]"
 					}
 				}
 			},
