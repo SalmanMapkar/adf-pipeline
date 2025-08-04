@@ -39,23 +39,15 @@
 			"type": "string",
 			"defaultValue": "adf_user"
 		},
-		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFolderPath": {
+		"taxiParquetFileTrigger_properties_fileEventPipeline_parameters_sourceFolderPath": {
 			"type": "string",
 			"defaultValue": "@triggerBody().folderPath"
 		},
-		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFileName": {
+		"taxiParquetFileTrigger_properties_fileEventPipeline_parameters_sourceFileName": {
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
 		},
-		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_destinationContainer": {
-			"type": "string",
-			"defaultValue": " "
-		},
-		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_destinationPath": {
-			"type": "string",
-			"defaultValue": " "
-		},
-		"onNYCFileCreateTrigger_properties_typeProperties_scope": {
+		"taxiParquetFileTrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde"
 		}
@@ -888,7 +880,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/onNYCFileCreateTrigger')]",
+			"name": "[concat(parameters('factoryName'), '/taxiParquetFileTrigger')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -901,10 +893,8 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"sourceFolderPath": "[parameters('onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFolderPath')]",
-							"sourceFileName": "[parameters('onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFileName')]",
-							"destinationContainer": "[parameters('onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_destinationContainer')]",
-							"destinationPath": "[parameters('onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_destinationPath')]"
+							"sourceFolderPath": "[parameters('taxiParquetFileTrigger_properties_fileEventPipeline_parameters_sourceFolderPath')]",
+							"sourceFileName": "[parameters('taxiParquetFileTrigger_properties_fileEventPipeline_parameters_sourceFileName')]"
 						}
 					}
 				],
@@ -913,7 +903,7 @@
 					"blobPathBeginsWith": "/staging/blobs/NYC_Taxi/",
 					"blobPathEndsWith": ".parquet",
 					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('onNYCFileCreateTrigger_properties_typeProperties_scope')]",
+					"scope": "[parameters('taxiParquetFileTrigger_properties_typeProperties_scope')]",
 					"events": [
 						"Microsoft.Storage.BlobCreated"
 					]
