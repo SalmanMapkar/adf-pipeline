@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "Copy taxi data to bronze",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -15,10 +15,60 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": {
+								"value": "@pipeline().parameters.path",
+								"type": "Expression"
+							},
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.name",
+								"type": "Expression"
+							},
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "ParquetReadSettings"
+						}
+					},
 					"enableStaging": false
-				}
+				},
+				"inputs": [
+					{
+						"referenceName": "paramADLSParquet_DS",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": {
+								"value": "@pipeline().parameters.container",
+								"type": "Expression"
+							},
+							"path": {
+								"value": "@pipeline().parameters.path",
+								"type": "Expression"
+							},
+							"file": " "
+						}
+					}
+				]
 			}
 		],
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "staging"
+			},
+			"path": {
+				"type": "string",
+				"defaultValue": "NYC_Taxi"
+			},
+			"name": {
+				"type": "string",
+				"defaultValue": "*.parquet"
+			}
+		},
 		"annotations": []
 	}
 }
