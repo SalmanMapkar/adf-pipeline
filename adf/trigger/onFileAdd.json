@@ -10,8 +10,8 @@
 					"type": "PipelineReference"
 				},
 				"parameters": {
-					"container": "@split(triggerBody.folderPath, '/')[0]",
-					"path": "@split(triggerBody.folderPath, '/')[1]",
+					"container": " ",
+					"path": "@triggerBody.folderPath",
 					"name": "@triggerBody.fileName"
 				}
 			}
