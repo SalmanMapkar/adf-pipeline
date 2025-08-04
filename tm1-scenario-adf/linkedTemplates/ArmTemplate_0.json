@@ -103,6 +103,52 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/paramADLSParquet_DS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "param_ADLS_LS",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container": {
+						"type": "string"
+					},
+					"path": {
+						"type": "string"
+					},
+					"file": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@trim(dataset().file)",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@trim(dataset().path)",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@trim(dataset().container)",
+							"type": "Expression"
+						}
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/param_ADLS_LS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/param_CSV_ADLS_DS')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -180,52 +226,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/DESKTOP-FF28MNM-IR')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/paramADLSParquet_DS')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "param_ADLS_LS",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"container": {
-						"type": "string"
-					},
-					"path": {
-						"type": "string"
-					},
-					"file": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@trim(dataset().file)",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@trim(dataset().path)",
-							"type": "Expression"
-						},
-						"fileSystem": {
-							"value": "@trim(dataset().container)",
-							"type": "Expression"
-						}
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/param_ADLS_LS')]"
 			]
 		},
 		{
@@ -457,24 +457,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/OnPrem_DFF28MNM_SQLServer_LS')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "OnPrem_DFF28MNM_SQLServer_IR",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [],
-				"typeProperties": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/OnPrem_DFF28MNM_SQLServer_IR')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/fileEventPipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -584,6 +566,24 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/paramADLSParquet_DS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OnPrem_DFF28MNM_SQLServer_LS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "OnPrem_DFF28MNM_SQLServer_IR",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/OnPrem_DFF28MNM_SQLServer_IR')]"
 			]
 		},
 		{
@@ -880,7 +880,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
