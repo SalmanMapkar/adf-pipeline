@@ -38,6 +38,18 @@
 		"param_ADLS_LS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://adbtutde.dfs.core.windows.net/"
+		},
+		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFolderPath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"onNYCFileCreateTrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde"
 		}
 	},
 	"variables": {
@@ -296,8 +308,6 @@
 								"storeSettings": {
 									"type": "AzureBlobFSReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "NYC_Taxi",
-									"wildcardFileName": "*.parquet",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -330,15 +340,15 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"container": {
-										"value": "staging",
+										"value": "@split(pipeline().parameters.sourceFolderPath, '/')[0]",
 										"type": "Expression"
 									},
 									"path": {
-										"value": "NYC_Taxi",
+										"value": "@split(pipeline().parameters.sourceFolderPath, '/')[1]",
 										"type": "Expression"
 									},
 									"file": {
-										"value": " ",
+										"value": "@pipeline().parameters.sourceFileName",
 										"type": "Expression"
 									}
 								}
@@ -350,11 +360,17 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"container": {
-										"value": "staging",
+										"value": "@pipeline().parameters.destinationContainer",
 										"type": "Expression"
 									},
-									"path": "NYC_Taxi_Target",
-									"file": "random.parquet"
+									"path": {
+										"value": "@pipeline().parameters.destinationPath",
+										"type": "Expression"
+									},
+									"file": {
+										"value": "@pipeline().parameters.sourceFileName",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -362,6 +378,22 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"sourceFolderPath": {
+						"type": "string"
+					},
+					"sourceFileName": {
+						"type": "string"
+					},
+					"destinationContainer": {
+						"type": "string",
+						"defaultValue": "staging"
+					},
+					"destinationPath": {
+						"type": "string",
+						"defaultValue": "NYC_Taxi_Target"
+					}
 				},
 				"annotations": []
 			},
@@ -846,6 +878,40 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/onNYCFileCreateTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "fileEventPipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"sourceFolderPath": "[parameters('onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFolderPath')]",
+							"sourceFileName": "[parameters('onNYCFileCreateTrigger_properties_fileEventPipeline_parameters_sourceFileName')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/staging/blobs/NYC_Taxi/",
+					"blobPathEndsWith": ".parquet",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('onNYCFileCreateTrigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/fileEventPipeline')]"
+			]
 		}
 	]
 }
