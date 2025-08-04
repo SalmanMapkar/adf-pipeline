@@ -17,7 +17,7 @@
 		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"blobPathBeginsWith": "/staging/NYC_Taxi",
+			"blobPathBeginsWith": "/staging/blobs/NYC_Taxi",
 			"blobPathEndsWith": ".parquet",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde",
