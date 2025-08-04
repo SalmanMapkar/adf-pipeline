@@ -84,6 +84,22 @@
 				]
 			}
 		],
+		"parameters": {
+			"sourceFolderPath": {
+				"type": "string"
+			},
+			"sourceFileName": {
+				"type": "string"
+			},
+			"destinationContainer": {
+				"type": "string",
+				"defaultValue": "staging"
+			},
+			"destinationPath": {
+				"type": "string",
+				"defaultValue": "NYC_Taxi_Target"
+			}
+		},
 		"annotations": []
 	}
 }
