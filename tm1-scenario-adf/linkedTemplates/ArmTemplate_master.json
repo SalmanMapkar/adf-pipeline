@@ -1,0 +1,119 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "tm1-scenario-adf"
+		},
+		"ADLS_LS_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ADLS_LS'"
+		},
+		"OnPrem_DFF28MNM_SQLServer_IR_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'OnPrem_DFF28MNM_SQLServer_IR'"
+		},
+		"param_ADLS_LS_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'param_ADLS_LS'"
+		},
+		"ADLS_LS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adftutsa.dfs.core.windows.net/"
+		},
+		"OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "DESKTOP-FF28MNM\\SQLEXPRESS"
+		},
+		"OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "AdventureWorksLT2022"
+		},
+		"OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "adf_user"
+		},
+		"param_ADLS_LS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adbtutde.dfs.core.windows.net/"
+		},
+		"onFileAdd_properties_fileEventPipeline_parameters_path": {
+			"type": "string",
+			"defaultValue": "@triggerBody.folderPath"
+		},
+		"onFileAdd_properties_fileEventPipeline_parameters_name": {
+			"type": "string",
+			"defaultValue": "@triggerBody.fileName"
+		},
+		"onFileAdd_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "tm1-scenario-adf_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"ADLS_LS_accountKey": {
+						"value": "[parameters('ADLS_LS_accountKey')]"
+					},
+					"param_ADLS_LS_accountKey": {
+						"value": "[parameters('param_ADLS_LS_accountKey')]"
+					},
+					"OnPrem_DFF28MNM_SQLServer_IR_password": {
+						"value": "[parameters('OnPrem_DFF28MNM_SQLServer_IR_password')]"
+					},
+					"ADLS_LS_properties_typeProperties_url": {
+						"value": "[parameters('ADLS_LS_properties_typeProperties_url')]"
+					},
+					"param_ADLS_LS_properties_typeProperties_url": {
+						"value": "[parameters('param_ADLS_LS_properties_typeProperties_url')]"
+					},
+					"OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_server": {
+						"value": "[parameters('OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_server')]"
+					},
+					"OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_database": {
+						"value": "[parameters('OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_database')]"
+					},
+					"OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_userName": {
+						"value": "[parameters('OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_userName')]"
+					},
+					"onFileAdd_properties_fileEventPipeline_parameters_path": {
+						"value": "[parameters('onFileAdd_properties_fileEventPipeline_parameters_path')]"
+					},
+					"onFileAdd_properties_fileEventPipeline_parameters_name": {
+						"value": "[parameters('onFileAdd_properties_fileEventPipeline_parameters_name')]"
+					},
+					"onFileAdd_properties_typeProperties_scope": {
+						"value": "[parameters('onFileAdd_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

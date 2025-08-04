@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "tm1-scenario-adf"
+		},
+		"ADLS_LS_accountKey": {
+			"value": ""
+		},
+		"OnPrem_DFF28MNM_SQLServer_IR_password": {
+			"value": ""
+		},
+		"param_ADLS_LS_accountKey": {
+			"value": ""
+		},
+		"ADLS_LS_properties_typeProperties_url": {
+			"value": "https://adftutsa.dfs.core.windows.net/"
+		},
+		"OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_server": {
+			"value": "DESKTOP-FF28MNM\\SQLEXPRESS"
+		},
+		"OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_database": {
+			"value": "AdventureWorksLT2022"
+		},
+		"OnPrem_DFF28MNM_SQLServer_IR_properties_typeProperties_userName": {
+			"value": "adf_user"
+		},
+		"param_ADLS_LS_properties_typeProperties_url": {
+			"value": "https://adbtutde.dfs.core.windows.net/"
+		},
+		"onFileAdd_properties_fileEventPipeline_parameters_path": {
+			"value": "@triggerBody.folderPath"
+		},
+		"onFileAdd_properties_fileEventPipeline_parameters_name": {
+			"value": "@triggerBody.fileName"
+		},
+		"onFileAdd_properties_typeProperties_scope": {
+			"value": "/subscriptions/1a56c7a0-0db5-4230-bd79-e450210601b8/resourceGroups/adf-tut-rg/providers/Microsoft.Storage/storageAccounts/adbtutde"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
